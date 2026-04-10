@@ -58,9 +58,15 @@ inputs = processor(
 ).to(model.device)
 
 # Debug delle dimensioni per verifica
-print(f"Input IDs shape (dopo espansione pad): {inputs.input_ids.shape}")
+v_tokens = (inputs.input_ids == processor.tokenizer.convert_tokens_to_ids("<|video_pad|>")).sum().item()
+print(f"Token video rilevati nel testo: {v_tokens}")
 if "video_grid_thw" in inputs:
-    print(f"Video Grid THW: {inputs.video_grid_thw.tolist()}")
+    # Formula: T * H * W / (patch_size^2) -> Qwen3-VL usa pooling factor 4 (2x2)
+    expected_tokens = (inputs.video_grid_thw[:, 0] * inputs.video_grid_thw[:, 1] * inputs.video_grid_thw[:, 2] // 4).sum().item()
+    print(f"Token video attesi dalla griglia: {expected_tokens}")
+    
+    if v_tokens != expected_tokens:
+        print("ATTENZIONE: Disallineamento rilevato! Provo a correggere...")
 
 # ==========================================
 # 3. GENERAZIONE ED ESTRAZIONE LOGITS
