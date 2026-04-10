@@ -1,16 +1,16 @@
 import torch
 import os
+import json
 from transformers import AutoProcessor, Qwen3VLForConditionalGeneration
 from qwen_vl_utils import process_vision_info
 
 # ==========================================
-# 1. SETUP AMBIENTE E MODELLO
+# 1. MODEL AND PROCESSOR SETUP
 # ==========================================
-# Forza il backend decord per evitare errori di metadati
 os.environ["QWEN_VL_VIDEO_READER_BACKEND"] = "decord"
 model_path = "Qwen/Qwen3-VL-4B-Instruct"
 
-print(f"--- Caricamento modello e processor: {model_path} ---")
+print(f"--- Loading model and processor: {model_path} ---")
 
 processor = AutoProcessor.from_pretrained(model_path)
 model = Qwen3VLForConditionalGeneration.from_pretrained(
@@ -21,35 +21,30 @@ model = Qwen3VLForConditionalGeneration.from_pretrained(
 )
 
 # ==========================================
-# 2. PREPARAZIONE INPUT
+# 2. INPUT PROCESSING
 # ==========================================
-video_path = "/homes/lpaladino/testQwen3VL/data/0IdYJGBmguM.mp4"
+with open('messages.json', 'r') as f:
+    data = json.load(f)
 
-messages = [
-    {
-        "role": "user",
-        "content": [
-            {
-                "type": "video",
-                "video": video_path,
-                "fps": 1.0, # 1 frame al secondo per bilanciare dettaglio e memoria
-                "video_fps": 24.0
-            },
-            {"type": "text", "text": "Descrivi brevemente cosa succede nel video."}
-        ]
-    }
-]
+messages = data["messages"]
 
-# Generiamo il testo base dal template (contiene il placeholder <|video_pad|>)
+# Template generation
 prompt_text = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-print(f"Testo dopo apply_chat_template:\n{prompt_text}\n")
+print("\n" + "="*30 + " DEBUG 1: CHAT TEMPLATE " + "="*30)
+print(f"Formatted Prompt:\n{prompt_text}")
+print("="*84)
 
-
-# Estraiamo i tensori del video tramite qwen_vl_utils
+# Take visual tensors
 image_inputs, video_inputs = process_vision_info(messages)
-print(f"Video inputs (prima di espansione): {video_inputs}")
+print("\n" + "="*30 + " DEBUG 2: VISION INFO " + "="*30)
+print(f"Video Inputs Type: {type(video_inputs)}")
+if video_inputs:
+    print(f"Number of videos processed: {len(video_inputs)}")
+    print(f"Raw Tensor Shape (before processing): {video_inputs[0].shape}") 
+    # [Frames, Channels, Height, Width]
+print("="*84)
 
-# Lui vedrà <|video_pad|> nel testo e lo espanderà in base alla shape di video_inputs.
+# Final input processing -> visual placeholders are expanded
 inputs = processor(
     text=[prompt_text],
     images=image_inputs,
@@ -58,21 +53,43 @@ inputs = processor(
     return_tensors="pt"
 ).to(model.device)
 
-# Debug delle dimensioni per verifica
-v_tokens = (inputs.input_ids == processor.tokenizer.convert_tokens_to_ids("<|video_pad|>")).sum().item()
-print(f"Token video rilevati nel testo: {v_tokens}")
+print("\n" + "="*30 + " DEBUG 3: FRAME & GRID ANALYSIS " + "="*30)
 if "video_grid_thw" in inputs:
-    # Formula: T * H * W / (patch_size^2) -> Qwen3-VL usa pooling factor 4 (2x2)
-    expected_tokens = (inputs.video_grid_thw[:, 0] * inputs.video_grid_thw[:, 1] * inputs.video_grid_thw[:, 2] // 4).sum().item()
-    print(f"Token video attesi dalla griglia: {expected_tokens}")
+    # video_grid_thw contains [T, H, W]
+    grid = inputs.video_grid_thw[0]
+    t, h, w = grid[0].item(), grid[1].item(), grid[2].item()
     
-    if v_tokens != expected_tokens:
-        print("ATTENZIONE: Disallineamento rilevato! Provo a correggere...")
+    patches_per_frame = h * w
+    tokens_per_frame = patches_per_frame // 4 # Spatial pooling 2x2
+    
+    print(f"Grid Dimensions -> T (Frames/Time): {t}, H (Height Patches): {h}, W (Width Patches): {w}")
+    print(f"Each frame consists of {patches_per_frame} raw patches.")
+    print(f"After 2x2 spatial pooling, each frame contributes {tokens_per_frame} latent tokens.")
+    print(f"Total Video Tokens Calculation: ({t} frames) * ({tokens_per_frame} tokens/frame) = {t * tokens_per_frame}")
+else:
+    print("No video grid found in inputs.")
+print("="*84)
+
+video_pad_id = processor.tokenizer.convert_tokens_to_ids("<|video_pad|>")
+actual_pad_count = (inputs.input_ids == video_pad_id).sum().item()
+
+# Total expected tokens using the formula: T * H * W / 4
+expected_tokens = (inputs.video_grid_thw[:, 0] * inputs.video_grid_thw[:, 1] * inputs.video_grid_thw[:, 2] // 4).sum().item()
+
+print("\n" + "="*30 + " DEBUG 4: TOKEN SYNC " + "="*30)
+print(f"Actual <|video_pad|> tokens found in text: {actual_pad_count}")
+print(f"Expected tokens calculated from grid:    {expected_tokens}")
+
+if actual_pad_count == expected_tokens:
+    print("STATUS: SUCCESS - Dimensions are perfectly aligned.")
+else:
+    print(f"STATUS: ERROR - Mismatch detected! Difference: {abs(actual_pad_count - expected_tokens)}")
+print("="*84)
 
 # ==========================================
-# 3. GENERAZIONE ED ESTRAZIONE LOGITS
+# 3. GENERATION AND LOGITS
 # ==========================================
-print("--- Avvio generazione ---")
+print("--- Starting generation ---")
 
 with torch.no_grad():
     outputs = model.generate(
@@ -91,10 +108,10 @@ with torch.no_grad():
         repetition_penalty=1.1
     )
 
-# Estrazione dei Logits (Shape: [Tokens_generati, Batch, Vocab_size])
+# Logits extraction (Shape: [Token_generated, Batch, Vocab_size])
 stacked_logits = torch.stack(outputs.logits)
 
-# Decodifica della sola risposta (tagliando l'input)
+# Decoding only the generated answer
 generated_ids = outputs.sequences[:, inputs.input_ids.shape[1]:]
 response = processor.batch_decode(
     generated_ids, 
@@ -106,7 +123,7 @@ response = processor.batch_decode(
 # 4. OUTPUT FINALE
 # ==========================================
 print("\n" + "="*50)
-print("RISPOSTA DEL MODELLO:")
+print("FINAL RESPONSE:")
 print(f"'{response.strip()}'")
 print("="*50)
 print(f"ANALISI LOGITS:")
