@@ -46,7 +46,7 @@ print(f"Testo dopo apply_chat_template:\n{prompt_text}\n")
 
 # Estraiamo i tensori del video tramite qwen_vl_utils
 image_inputs, video_inputs = process_vision_info(messages)
-print(f"Video inputs shape (prima di espansione): {video_inputs.shape}")
+print(f"Video inputs (prima di espansione): {video_inputs}")
 
 # Lui vedrà <|video_pad|> nel testo e lo espanderà in base alla shape di video_inputs.
 inputs = processor(
