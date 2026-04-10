@@ -29,7 +29,7 @@ messages = [
         "content": [
             {
                 "type": "video",
-                "video": "/homes/lpaladino/data/0IdYJGBmguM.mp4",
+                "video": "/homes/lpaladino/testQwen3VL/data/0IdYJGBmguM.mp4",
                 "fps": 2.0, # Analizza 2 frame per ogni secondo di video
             },
             {"type": "text", "text": "Descrivi cosa succede in questo video in breve."}
