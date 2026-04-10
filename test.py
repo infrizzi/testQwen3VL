@@ -30,7 +30,7 @@ messages = [
             {
                 "type": "video",
                 "video": "/homes/lpaladino/testQwen3VL/data/0IdYJGBmguM.mp4",
-                "fps": 2.0, # Analizza 2 frame per ogni secondo di video
+                "fps": 1.0, 
             },
             {"type": "text", "text": "Descrivi cosa succede in questo video in breve."}
         ]
@@ -52,6 +52,10 @@ inputs = processor(
     padding=True,
     return_tensors="pt"
 ).to(model.device)
+
+if "video_grid_thw" in inputs:
+    print(f"Video Grid Shape (THW): {inputs['video_grid_thw'].shape}")
+    print(f"Video Grid THW values (T,H,W): {inputs['video_grid_thw']}")
 
 # ==========================================
 # 3. GENERAZIONE
@@ -81,7 +85,7 @@ print(f"- Vocab Size: {model.config.vocab_size}")
 print("="*50)
 
 # Decodifica
-generated_ids = outputs[:, inputs.input_ids.shape[1]:]
+generated_ids = outputs.sequences[:, inputs.input_ids.shape[1]:]
 response = processor.batch_decode(
     generated_ids, 
     skip_special_tokens=True, 
