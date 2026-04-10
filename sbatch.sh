@@ -18,7 +18,7 @@ module load cuda/12.6.3-none-none
 source activate flash_test
 
 # Cartelle di lavoro
-cd /homes/lpaladino/testQwen
+cd /homes/lpaladino/testQwen3VL
 export PYTHONPATH=$PWD:$PYTHONPATH
 
 # Ottimizzazione memoria Pytorch
