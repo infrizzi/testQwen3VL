@@ -1,0 +1,18 @@
+--- Caricamento modello: Qwen/Qwen3-VL-4B-Instruct ---
+--- Generazione in corso... ---
+
+==================================================
+RISPOSTA DEL MODELLO:
+'Ciao! Sono un modello linguistico su larga scala, progettato per comprendere e generare testo in modo naturale — ma non sono direttamente legato a **Flash Attention** o ad altri ottimizzazioni hardware/software specifiche.
+
+Tuttavia, sì: molti modelli come il mio (Qwen) utilizzano tecniche di attenzione efficienti, tra cui **Flash Attention**, per migliorare la velocità e l'efficienza durante il training e l'inference. Flash Attention è una tecnologia che permette di ridurre la complessità computazionale dell’attenzione nella rete neurale, specialmente quando si lavora con grandi sequenze, mantenendo prestazioni elevate anche su GPU moderne.
+
+Se hai domande sul funzionamento del modello, sulla tecnologia di attenzione, o su come Flash Attention migliora le performance, sono qui per aiutarti!
+
+✨ Domanda? Fai pure!'
+==================================================
+Dettagli Tecnici:
+- Input tokens: 25
+- Output tokens generati: 210
+- Logits shape: torch.Size([210, 1, 151936])
+==================================================
