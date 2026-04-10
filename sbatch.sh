@@ -24,6 +24,7 @@ export PYTHONPATH=$PWD:$PYTHONPATH
 
 # Ottimizzazione memoria Pytorch
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+export QWEN_VL_VIDEO_READER_BACKEND=decord
 
 # Creazione cartella logs se non presente
 mkdir -p logs

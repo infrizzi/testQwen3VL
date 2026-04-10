@@ -1,4 +1,5 @@
 import torch
+import os
 from transformers import AutoProcessor, Qwen3VLForConditionalGeneration
 from qwen_vl_utils import process_vision_info
 
@@ -6,6 +7,7 @@ from qwen_vl_utils import process_vision_info
 # 1. CONFIGURAZIONE MODELLO
 # ==========================================
 model_path = "Qwen/Qwen3-VL-4B-Instruct"
+os.environ["QWEN_VL_VIDEO_READER_BACKEND"] = "decord"
 
 print(f"--- Caricamento modello: {model_path} ---")
 
