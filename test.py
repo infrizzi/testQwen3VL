@@ -33,6 +33,7 @@ messages = [
                 "type": "video",
                 "video": video_path,
                 "fps": 1.0, # 1 frame al secondo per bilanciare dettaglio e memoria
+                "video_fps": 24.0
             },
             {"type": "text", "text": "Descrivi brevemente cosa succede nel video."}
         ]
@@ -75,7 +76,12 @@ print("--- Avvio generazione ---")
 
 with torch.no_grad():
     outputs = model.generate(
-        **inputs,
+        input_ids=inputs.input_ids,
+        attention_mask=inputs.attention_mask,
+        pixel_values_videos=inputs.get("pixel_values_videos", None),
+        video_grid_thw=inputs.get("video_grid_thw", None),
+        pixel_values=inputs.get("pixel_values", None),
+        image_grid_thw=inputs.get("image_grid_thw", None),
         max_new_tokens=128,
         output_logits=True,
         return_dict_in_generate=True,
