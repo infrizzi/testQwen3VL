@@ -39,6 +39,7 @@ messages = [
 
 # Applichiamo il template
 text = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+print(f"Testo dopo template: '{text}'")
 
 # Estrazione info visuali con qwen_vl_utils
 # Nota: process_vision_info gestisce il caricamento del file video
