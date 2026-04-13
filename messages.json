@@ -21,8 +21,7 @@
         {
           "type": "video",
           "video": "/homes/lpaladino/testQwen3VL/data/0ag_Qi5OEd0.mp4",
-          "fps": 1.0,
-          "video_fps": 24.0
+          "fps": 1.0
         },
         {
           "type": "text",
@@ -36,8 +35,7 @@
         {
           "type": "video",
           "video": "/homes/lpaladino/testQwen3VL/data/0iED5BojTMI.mp4",
-          "fps": 1.0,
-          "video_fps": 24.0
+          "fps": 1.0
         },
         {
           "type": "text",

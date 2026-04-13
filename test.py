@@ -52,16 +52,13 @@ for i, entry in enumerate(messages):
     print("="*84)
 
     # Take visual tensors
-    image_inputs, video_inputs, video_kwargs = qwen_vl_utils.process_vision_info(current_message, return_video_metadata=True, return_video_kwargs=True)
+    image_inputs, video_inputs = qwen_vl_utils.process_vision_info(current_message)
     print("\n" + "="*30 + " DEBUG 2: VISION INFO " + "="*30)
     print(f"Video Inputs Type: {type(video_inputs)}")
     if video_inputs:
         print(f"Number of videos processed: {len(video_inputs)}")
-        first_video_tensor, first_video_metadata = video_inputs[0]
-        print(f"Raw Tensor Shape (before processing): {first_video_tensor.shape}")
+        print(f"Raw Tensor Shape (before processing): {video_inputs[0].shape}") 
         # [Frames, Channels, Height, Width]
-        
-        print(f"Video Metadata: {first_video_metadata}") 
     print("="*84)
 
     # Final input processing -> visual placeholders are expanded
@@ -70,8 +67,7 @@ for i, entry in enumerate(messages):
         images=image_inputs,
         videos=video_inputs,
         padding=True,
-        return_tensors="pt",
-        **video_kwargs
+        return_tensors="pt"
     ).to(model.device)
 
     # End timer for visual processing
