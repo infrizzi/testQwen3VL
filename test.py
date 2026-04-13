@@ -26,7 +26,7 @@ model = Qwen3VLForConditionalGeneration.from_pretrained(
 
 qwen_vl_utils.vision_process.VIDEO_MAX_TOKEN_NUM = 2048
 qwen_vl_utils.vision_process.FPS_MAX_FRAMES = 512
-qwen_vl_utils.vision_process.MODEL_SEQ_LEN = 256000
+qwen_vl_utils.vision_process.MODEL_SEQ_LEN = 128000
 
 # ==========================================
 # 2. INPUT PROCESSING
@@ -52,7 +52,7 @@ for i, entry in enumerate(messages):
     print("="*84)
 
     # Take visual tensors
-    image_inputs, video_inputs = qwen_vl_utils.process_vision_info(current_message)
+    image_inputs, video_inputs, video_kwargs = qwen_vl_utils.process_vision_info(current_message, return_video_metadata=True, return_video_kwargs=True)
     print("\n" + "="*30 + " DEBUG 2: VISION INFO " + "="*30)
     print(f"Video Inputs Type: {type(video_inputs)}")
     if video_inputs:
@@ -67,7 +67,8 @@ for i, entry in enumerate(messages):
         images=image_inputs,
         videos=video_inputs,
         padding=True,
-        return_tensors="pt"
+        return_tensors="pt",
+        **video_kwargs
     ).to(model.device)
 
     # End timer for visual processing
