@@ -34,7 +34,7 @@ for i, entry in enumerate(messages):
 
     # Reset GPU memory tracks and start timer for visual processing
     torch.cuda.reset_peak_memory_stats()
-    start_visual = torch.perf_counter()
+    start_visual = time.perf_counter()
 
     current_message = [entry]
 
@@ -64,7 +64,7 @@ for i, entry in enumerate(messages):
     ).to(model.device)
 
     # End timer for visual processing
-    end_visual = torch.perf_counter()
+    end_visual = time.perf_counter()
     visual_duration = end_visual - start_visual
 
     # VRAM usage
