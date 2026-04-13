@@ -1,9 +1,14 @@
+from anyio import Path
 import torch
 import os
 import json
 import time
+import copy
 from transformers import AutoProcessor, Qwen3VLForConditionalGeneration
 import  qwen_vl_utils
+from clean import clean_srt
+
+TEXT_DIR = "/homes/lpaladino/testQwen3VL/data/text"
 
 # ==========================================
 # 1. MODEL AND PROCESSOR SETUP
@@ -26,9 +31,9 @@ model = Qwen3VLForConditionalGeneration.from_pretrained(
     device_map="auto"
 )
 
-qwen_vl_utils.vision_process.VIDEO_MAX_TOKEN_NUM = 768      # increase for better small details
-qwen_vl_utils.vision_process.FPS_MAX_FRAMES = 768           # increase for better temporal understanding
-qwen_vl_utils.vision_process.MODEL_SEQ_LEN = 128000         # increase for general better long video handling
+qwen_vl_utils.vision_process.VIDEO_MAX_TOKEN_NUM = 2048      # increase for better small details
+qwen_vl_utils.vision_process.FPS_MAX_FRAMES = 1024           # increase for better temporal understanding
+qwen_vl_utils.vision_process.MODEL_SEQ_LEN = 256000         # increase for general better long video handling
 
 # ==========================================
 # 2. INPUT PROCESSING
@@ -41,11 +46,37 @@ messages = data["messages"]
 for i, entry in enumerate(messages):
     print(f"\n--- Message {i+1} ---")
 
+    current_message = copy.deepcopy(entry)
+    video_path = None
+
+    for content_item in entry["content"]:
+        if content_item["type"] == "video":
+            video_path = content_item["video"]
+            # Estraiamo il nome del file senza estensione (es. '0ag_Qi5OEd0')
+            video_filename = Path(video_path).stem
+            break
+
+    if video_filename:
+        srt_path = os.path.join(TEXT_DIR, f"{video_filename}.srt")
+        if os.path.exists(srt_path):
+            print(f"Found subtitles: {srt_path}")
+            cleaned_subtitles = clean_srt(srt_path)
+            
+            # Inseriamo i sottotitoli nel messaggio testuale esistente
+            for content_item in entry["content"]:
+                if content_item["type"] == "text":
+                    original_text = content_item["text"]
+                    # Prependiamo i sottotitoli alla domanda
+                    content_item["text"] = f"Video Subtitles:\n{cleaned_subtitles}\n\nQuestion: {original_text}"
+                    break
+        else:
+            print(f"No subtitles found for {video_filename}")
+
     # Reset GPU memory tracks and start timer for visual processing
     torch.cuda.reset_peak_memory_stats()
     start_visual = time.perf_counter()
 
-    current_message = [entry]
+    current_message = [current_message]
 
     # Template generation
     prompt_text = processor.apply_chat_template(current_message, tokenize=False, add_generation_prompt=True)
@@ -56,9 +87,7 @@ for i, entry in enumerate(messages):
     # Take visual tensors
     image_inputs, video_inputs = qwen_vl_utils.process_vision_info(current_message)
     print("\n" + "="*30 + " DEBUG 2: VISION INFO " + "="*30)
-    print(f"Video Inputs Type: {type(video_inputs)}")
     if video_inputs:
-        print(f"Number of videos processed: {len(video_inputs)}")
         print(f"Raw Tensor Shape (before processing): {video_inputs[0].shape}") 
         # [Frames, Channels, Height, Width]
     print("="*84)
@@ -96,8 +125,8 @@ for i, entry in enumerate(messages):
         tokens_per_frame = patches_per_frame // 4 # Spatial pooling 2x2
         
         print(f"Grid Dimensions -> T (Frames/Time): {t}, H (Height Patches): {h}, W (Width Patches): {w}")
-        print(f"Each frame consists of {patches_per_frame} raw patches.")
-        print(f"After 2x2 spatial pooling, each frame contributes {tokens_per_frame} latent tokens.")
+        print(f"Each frame consists of {patches_per_frame} raw patches")
+        print(f"After 2x2 spatial pooling, each frame contributes {tokens_per_frame} latent tokens")
         print(f"Total Video Tokens Calculation: ({t} frames) * ({tokens_per_frame} tokens/frame) = {t * tokens_per_frame}")
     else:
         print("No video grid found in inputs.")
@@ -114,7 +143,7 @@ for i, entry in enumerate(messages):
     print(f"Expected tokens calculated from grid:    {expected_tokens}")
 
     if actual_pad_count == expected_tokens:
-        print("STATUS: SUCCESS - Dimensions are perfectly aligned.")
+        print("STATUS: SUCCESS - Dimensions are perfectly aligned")
     else:
         print(f"STATUS: ERROR - Mismatch detected! Difference: {abs(actual_pad_count - expected_tokens)}")
     print("="*84)
@@ -159,7 +188,7 @@ for i, entry in enumerate(messages):
     print("FINAL RESPONSE:")
     print(f"'{response.strip()}'")
     print("="*50)
-    print(f"ANALISI LOGITS:")
+    print(f"LOGITS ANALYSIS:")
     print(f"- Generated tokens: {stacked_logits.shape[0]}")
     print(f"- Logits shape: {stacked_logits.shape}")
     print("="*50)

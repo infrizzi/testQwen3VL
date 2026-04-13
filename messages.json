@@ -5,7 +5,7 @@
       "content": [
         {
           "type": "video",
-          "video": "/homes/lpaladino/testQwen3VL/data/0IdYJGBmguM.mp4",
+          "video": "/homes/lpaladino/testQwen3VL/data/video/0IdYJGBmguM.mp4",
           "fps": 1.0,
           "video_fps": 24.0
         },
@@ -20,7 +20,7 @@
       "content": [
         {
           "type": "video",
-          "video": "/homes/lpaladino/testQwen3VL/data/0ag_Qi5OEd0.mp4",
+          "video": "/homes/lpaladino/testQwen3VL/data/video/0ag_Qi5OEd0.mp4",
           "fps": 1.0
         },
         {
@@ -34,7 +34,7 @@
       "content": [
         {
           "type": "video",
-          "video": "/homes/lpaladino/testQwen3VL/data/0iED5BojTMI.mp4",
+          "video": "/homes/lpaladino/testQwen3VL/data/video/0iED5BojTMI.mp4",
           "fps": 1.0
         },
         {
