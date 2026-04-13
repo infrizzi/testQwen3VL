@@ -24,9 +24,9 @@ model = Qwen3VLForConditionalGeneration.from_pretrained(
     device_map="auto"
 )
 
-qwen_vl_utils.vision_process.VIDEO_MAX_TOKEN_NUM = 16384
-qwen_vl_utils.vision_process.FPS_MAX_FRAMES = 1512
-qwen_vl_utils.vision_process.MODEL_SEQ_LEN = 1000000
+qwen_vl_utils.vision_process.VIDEO_MAX_TOKEN_NUM = 2048
+qwen_vl_utils.vision_process.FPS_MAX_FRAMES = 512
+qwen_vl_utils.vision_process.MODEL_SEQ_LEN = 256000
 
 # ==========================================
 # 2. INPUT PROCESSING
