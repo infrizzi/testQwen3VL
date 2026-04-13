@@ -3,7 +3,7 @@ import os
 import json
 import time
 from transformers import AutoProcessor, Qwen3VLForConditionalGeneration
-from qwen_vl_utils import process_vision_info
+import  qwen_vl_utils
 
 # ==========================================
 # 1. MODEL AND PROCESSOR SETUP
@@ -15,8 +15,6 @@ print(f"--- Loading model and processor: {model_path} ---")
 
 processor = AutoProcessor.from_pretrained(model_path)
 processor.video_processor.max_frames = 1024
-processor.video_processor.VIDEO_MAX_TOKEN_NUM = 1024
-processor.video_processor.MODEL_SEQ_LEN = 512000
 processor.video_processor.min_frames = 16 
 
 model = Qwen3VLForConditionalGeneration.from_pretrained(
@@ -25,6 +23,10 @@ model = Qwen3VLForConditionalGeneration.from_pretrained(
     attn_implementation="flash_attention_2",
     device_map="auto"
 )
+
+qwen_vl_utils.vision_process.VIDEO_MAX_TOKEN_NUM = 16384
+qwen_vl_utils.vision_process.FPS_MAX_FRAMES = 1512
+qwen_vl_utils.vision_process.MODEL_SEQ_LEN = 1000000
 
 # ==========================================
 # 2. INPUT PROCESSING
@@ -50,7 +52,7 @@ for i, entry in enumerate(messages):
     print("="*84)
 
     # Take visual tensors
-    image_inputs, video_inputs = process_vision_info(current_message)
+    image_inputs, video_inputs = qwen_vl_utils.process_vision_info(current_message)
     print("\n" + "="*30 + " DEBUG 2: VISION INFO " + "="*30)
     print(f"Video Inputs Type: {type(video_inputs)}")
     if video_inputs:
