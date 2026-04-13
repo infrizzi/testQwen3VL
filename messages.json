@@ -20,13 +20,13 @@
       "content": [
         {
           "type": "video",
-          "video": "/homes/lpaladino/testQwen3VL/data/0IdYJGBmguM.mp4",
+          "video": "/homes/lpaladino/testQwen3VL/data/0ag_Qi5OEd0.mp4",
           "nframes": 16,
           "video_fps": 24.0
         },
         {
           "type": "text",
-          "text": "How many people are there in the video ending?"
+          "text": "What it's being created here? Describe the process and the final object."
         }
       ]
     }
