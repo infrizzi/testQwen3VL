@@ -37,8 +37,7 @@
           "type": "video",
           "video": "/homes/lpaladino/testQwen3VL/data/0iED5BojTMI.mp4",
           "fps": 1.0,
-          "video_fps": 24.0,
-          "total_pixels": 100000000
+          "video_fps": 24.0
         },
         {
           "type": "text",
