@@ -14,6 +14,9 @@ model_path = "Qwen/Qwen3-VL-4B-Instruct"
 print(f"--- Loading model and processor: {model_path} ---")
 
 processor = AutoProcessor.from_pretrained(model_path)
+processor.video_processor.max_frames = 1024
+processor.video_processor.min_frames = 16 
+
 model = Qwen3VLForConditionalGeneration.from_pretrained(
     model_path,
     torch_dtype=torch.bfloat16,
@@ -55,8 +58,6 @@ for i, entry in enumerate(messages):
     print("="*84)
 
     # Final input processing -> visual placeholders are expanded
-    processor.video_processor.min_frames = 16
-    processor.video_processor.max_frames = 64
     inputs = processor(
         text=[prompt_text],
         images=image_inputs,
