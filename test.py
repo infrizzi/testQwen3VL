@@ -15,7 +15,8 @@ print(f"--- Loading model and processor: {model_path} ---")
 
 processor = AutoProcessor.from_pretrained(model_path)
 processor.video_processor.max_frames = 1024
-processor.video_processor.min_pixels = 1024 * 28 * 28
+processor.video_processor.VIDEO_MAX_TOKEN_NUM = 1024
+processor.video_processor.MODEL_SEQ_LEN = 512000
 processor.video_processor.min_frames = 16 
 
 model = Qwen3VLForConditionalGeneration.from_pretrained(
