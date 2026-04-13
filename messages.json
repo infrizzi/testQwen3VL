@@ -29,6 +29,21 @@
           "text": "What it's being created here? Describe the process and the final object."
         }
       ]
+    },
+            {
+      "role": "user",
+      "content": [
+        {
+          "type": "video",
+          "video": "/homes/lpaladino/testQwen3VL/data/0iED5BojTMI.mp4",
+          "fps": 1.0,
+          "video_fps": 24.0
+        },
+        {
+          "type": "text",
+          "text": "What kind of sport is being played here? Who did obtain the best score in terms of time?"
+        }
+      ]
     }
   ]
 }
