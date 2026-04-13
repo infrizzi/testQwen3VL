@@ -57,8 +57,11 @@ for i, entry in enumerate(messages):
     print(f"Video Inputs Type: {type(video_inputs)}")
     if video_inputs:
         print(f"Number of videos processed: {len(video_inputs)}")
-        print(f"Raw Tensor Shape (before processing): {video_inputs[0].shape}") 
+        first_video_tensor, first_video_metadata = video_inputs[0]
+        print(f"Raw Tensor Shape (before processing): {first_video_tensor.shape}")
         # [Frames, Channels, Height, Width]
+        
+        print(f"Video Metadata: {first_video_metadata}") 
     print("="*84)
 
     # Final input processing -> visual placeholders are expanded
