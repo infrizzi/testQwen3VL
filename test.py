@@ -1,6 +1,7 @@
 import torch
 import os
 import json
+import time
 from transformers import AutoProcessor, Qwen3VLForConditionalGeneration
 from qwen_vl_utils import process_vision_info
 
@@ -31,6 +32,10 @@ messages = data["messages"]
 for i, entry in enumerate(messages):
     print(f"\n--- Message {i+1} ---")
 
+    # Reset GPU memory tracks and start timer for visual processing
+    torch.cuda.reset_peak_memory_stats()
+    start_visual = torch.perf_counter()
+
     current_message = [entry]
 
     # Template generation
@@ -58,7 +63,21 @@ for i, entry in enumerate(messages):
         return_tensors="pt"
     ).to(model.device)
 
-    print("\n" + "="*30 + " DEBUG 3: FRAME & GRID ANALYSIS " + "="*30)
+    # End timer for visual processing
+    end_visual = torch.perf_counter()
+    visual_duration = end_visual - start_visual
+
+    # VRAM usage
+    current_vram = torch.cuda.memory_allocated() / (1024 ** 3)  # Convert to GB
+    peak_vram = torch.cuda.max_memory_allocated() / (1024 ** 3)  # Convert to GB
+
+    print("\n" + "="*30 + " DEBUG 3: VRAM USAGE & TIME SPENT " + "="*30)
+    print(f"Current VRAM Usage: {current_vram:.2f} GB")
+    print(f"Peak VRAM Usage: {peak_vram:.2f} GB")
+    print(f"Visual Processing Time: {visual_duration:.4f} seconds")
+    print("="*84)
+
+    print("\n" + "="*30 + " DEBUG 4: FRAME & GRID ANALYSIS " + "="*30)
     if "video_grid_thw" in inputs:
         # video_grid_thw contains [T, H, W]
         grid = inputs.video_grid_thw[0]
@@ -81,7 +100,7 @@ for i, entry in enumerate(messages):
     # Total expected tokens using the formula: T * H * W / 4
     expected_tokens = (inputs.video_grid_thw[:, 0] * inputs.video_grid_thw[:, 1] * inputs.video_grid_thw[:, 2] // 4).sum().item()
 
-    print("\n" + "="*30 + " DEBUG 4: TOKEN SYNC " + "="*30)
+    print("\n" + "="*30 + " DEBUG 5: TOKEN SYNC " + "="*30)
     print(f"Actual <|video_pad|> tokens found in text: {actual_pad_count}")
     print(f"Expected tokens calculated from grid:    {expected_tokens}")
 
@@ -104,7 +123,7 @@ for i, entry in enumerate(messages):
             video_grid_thw=inputs.get("video_grid_thw", None),
             pixel_values=inputs.get("pixel_values", None),
             image_grid_thw=inputs.get("image_grid_thw", None),
-            max_new_tokens=128,
+            max_new_tokens=256,
             output_logits=True,
             return_dict_in_generate=True,
             do_sample=True,

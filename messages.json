@@ -6,7 +6,7 @@
         {
           "type": "video",
           "video": "/homes/lpaladino/testQwen3VL/data/0IdYJGBmguM.mp4",
-          "nframes": 16,
+          "fps": 1.0,
           "video_fps": 24.0
         },
         {
@@ -21,7 +21,7 @@
         {
           "type": "video",
           "video": "/homes/lpaladino/testQwen3VL/data/0ag_Qi5OEd0.mp4",
-          "nframes": 16,
+          "fps": 1.0,
           "video_fps": 24.0
         },
         {
