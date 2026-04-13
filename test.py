@@ -14,6 +14,8 @@ model_path = "Qwen/Qwen3-VL-4B-Instruct"
 print(f"--- Loading model and processor: {model_path} ---")
 
 processor = AutoProcessor.from_pretrained(model_path)
+
+# Adjust temporal settings -> positional IDs during MRoPE
 processor.video_processor.max_frames = 1024
 processor.video_processor.min_frames = 16 
 
@@ -24,9 +26,9 @@ model = Qwen3VLForConditionalGeneration.from_pretrained(
     device_map="auto"
 )
 
-qwen_vl_utils.vision_process.VIDEO_MAX_TOKEN_NUM = 2048
-qwen_vl_utils.vision_process.FPS_MAX_FRAMES = 512
-qwen_vl_utils.vision_process.MODEL_SEQ_LEN = 128000
+qwen_vl_utils.vision_process.VIDEO_MAX_TOKEN_NUM = 768      # increase for better small details
+qwen_vl_utils.vision_process.FPS_MAX_FRAMES = 768           # increase for better temporal understanding
+qwen_vl_utils.vision_process.MODEL_SEQ_LEN = 128000         # increase for general better long video handling
 
 # ==========================================
 # 2. INPUT PROCESSING
