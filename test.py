@@ -55,6 +55,8 @@ for i, entry in enumerate(messages):
     print("="*84)
 
     # Final input processing -> visual placeholders are expanded
+    processor.video_processor.min_frames = 16
+    processor.video_processor.max_frames = 64
     inputs = processor(
         text=[prompt_text],
         images=image_inputs,
@@ -123,7 +125,7 @@ for i, entry in enumerate(messages):
             video_grid_thw=inputs.get("video_grid_thw", None),
             pixel_values=inputs.get("pixel_values", None),
             image_grid_thw=inputs.get("image_grid_thw", None),
-            max_new_tokens=256,
+            max_new_tokens=512,
             output_logits=True,
             return_dict_in_generate=True,
             do_sample=True,
