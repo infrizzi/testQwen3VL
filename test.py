@@ -15,6 +15,7 @@ print(f"--- Loading model and processor: {model_path} ---")
 
 processor = AutoProcessor.from_pretrained(model_path)
 processor.video_processor.max_frames = 1024
+processor.video_processor.max_pixels = 1024 * 28 * 28
 processor.video_processor.min_frames = 16 
 
 model = Qwen3VLForConditionalGeneration.from_pretrained(
@@ -75,9 +76,9 @@ for i, entry in enumerate(messages):
     peak_vram = torch.cuda.max_memory_allocated() / (1024 ** 3)  # Convert to GB
 
     print("\n" + "="*30 + " DEBUG 3: VRAM USAGE & TIME SPENT " + "="*30)
-    print(f"Current VRAM Usage: {current_vram:.2f} GB")
-    print(f"Peak VRAM Usage: {peak_vram:.2f} GB")
-    print(f"Visual Processing Time: {visual_duration:.4f} seconds")
+    print(f"Current VRAM Usage: {current_vram:.3f} GB")
+    print(f"Peak VRAM Usage: {peak_vram:.3f} GB")
+    print(f"Visual Processing Time: {visual_duration:.3f} seconds")
     print("="*84)
 
     print("\n" + "="*30 + " DEBUG 4: FRAME & GRID ANALYSIS " + "="*30)
