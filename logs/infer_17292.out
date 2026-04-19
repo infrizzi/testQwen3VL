@@ -1,0 +1,146 @@
+--- Loading model and processor: Qwen/Qwen3-VL-4B-Instruct ---
+
+--- Message 1 ---
+Found subtitles: /homes/lpaladino/testQwen3VL/data/text/0IdYJGBmguM.srt
+
+============================== DEBUG 1: CHAT TEMPLATE ==============================
+Formatted Prompt:
+<|im_start|>user
+<|vision_start|><|video_pad|><|vision_end|>What's the object the man with black suit is giving to the man with blue shirt?<|im_end|>
+<|im_start|>assistant
+
+====================================================================================
+
+============================== DEBUG 2: VISION INFO ==============================
+Raw Tensor Shape (before processing): torch.Size([88, 3, 728, 1288])
+====================================================================================
+
+============================== DEBUG 3: VRAM USAGE & TIME SPENT ==============================
+Current VRAM Usage: 8.435 GB
+Peak VRAM Usage: 8.435 GB
+Visual Processing Time: 4.259 seconds
+====================================================================================
+
+============================== DEBUG 4: FRAME & GRID ANALYSIS ==============================
+Grid Dimensions -> T (Frames/Time): 8, H (Height Patches): 46, W (Width Patches): 80
+Each frame consists of 3680 raw patches
+After 2x2 spatial pooling, each frame contributes 920 latent tokens
+Total Video Tokens Calculation: (8 frames) * (920 tokens/frame) = 7360
+====================================================================================
+
+============================== DEBUG 5: TOKEN SYNC ==============================
+Actual <|video_pad|> tokens found in text: 7360
+Expected tokens calculated from grid:    7360
+STATUS: SUCCESS - Dimensions are perfectly aligned
+====================================================================================
+--- Starting generation ---
+
+==================================================
+FINAL RESPONSE:
+'The man in the black suit is giving a pen to the man in the blue shirt. The interaction suggests they might be discussing work or sharing something important, as the man in the blue shirt looks surprised and slightly amused while receiving it.'
+==================================================
+LOGITS ANALYSIS:
+- Generated tokens: 48
+- Logits shape: torch.Size([48, 1, 151936])
+==================================================
+
+--- Message 2 ---
+Found subtitles: /homes/lpaladino/testQwen3VL/data/text/0ag_Qi5OEd0.srt
+
+============================== DEBUG 1: CHAT TEMPLATE ==============================
+Formatted Prompt:
+<|im_start|>user
+<|vision_start|><|video_pad|><|vision_end|>What it's being created here? Describe the process and the final object.<|im_end|>
+<|im_start|>assistant
+
+====================================================================================
+
+============================== DEBUG 2: VISION INFO ==============================
+Raw Tensor Shape (before processing): torch.Size([488, 3, 644, 1120])
+====================================================================================
+
+============================== DEBUG 3: VRAM USAGE & TIME SPENT ==============================
+Current VRAM Usage: 9.622 GB
+Peak VRAM Usage: 9.791 GB
+Visual Processing Time: 17.805 seconds
+====================================================================================
+
+============================== DEBUG 4: FRAME & GRID ANALYSIS ==============================
+Grid Dimensions -> T (Frames/Time): 20, H (Height Patches): 36, W (Width Patches): 64
+Each frame consists of 2304 raw patches
+After 2x2 spatial pooling, each frame contributes 576 latent tokens
+Total Video Tokens Calculation: (20 frames) * (576 tokens/frame) = 11520
+====================================================================================
+
+============================== DEBUG 5: TOKEN SYNC ==============================
+Actual <|video_pad|> tokens found in text: 11520
+Expected tokens calculated from grid:    11520
+STATUS: SUCCESS - Dimensions are perfectly aligned
+====================================================================================
+--- Starting generation ---
+
+==================================================
+FINAL RESPONSE:
+'In this video, a person is crafting a decorative keychain using blue yarn and a can opener ring as a base. The process begins with threading the yarn through the metal ring of the can opener to form an initial loop. The crafter then uses a needle to weave the yarn in intricate patterns around the ring, creating a detailed design that resembles a stylized octopus or similar creature. 
+
+The steps involve looping and weaving the yarn in a spiral fashion, gradually building up the structure into a three-dimensional figure with multiple arms or tentacles extending outward. As the crafting progresses, the hands carefully manipulate the yarn to ensure symmetry and consistency in the pattern. Once the desired shape is achieved, the piece is completed by securing the ends and possibly adding embellishments such as googly eyes for character-like features.
+
+The final product is a charming, handmade keychain featuring a whimsical creature made entirely from yarn. It’s both functional and decorative, suitable for use as a personal accessory or gift. The craftsmanship highlights the creativity involved in transforming simple materials like yarn and a discarded can opener into a unique, eye-catching item. The video concludes with a display of two finished keychains — one blue and one pink — each adorned with expressive eyes, showcasing the end result of the crafting process.'
+==================================================
+LOGITS ANALYSIS:
+- Generated tokens: 257
+- Logits shape: torch.Size([257, 1, 151936])
+==================================================
+
+--- Message 3 ---
+Found subtitles: /homes/lpaladino/testQwen3VL/data/text/0iED5BojTMI.srt
+
+============================== DEBUG 1: CHAT TEMPLATE ==============================
+Formatted Prompt:
+<|im_start|>user
+<|vision_start|><|video_pad|><|vision_end|>What kind of sport is being played here? Who did obtain the best score in terms of time?<|im_end|>
+<|im_start|>assistant
+
+====================================================================================
+
+============================== DEBUG 2: VISION INFO ==============================
+Raw Tensor Shape (before processing): torch.Size([1024, 3, 420, 784])
+====================================================================================
+
+============================== DEBUG 3: VRAM USAGE & TIME SPENT ==============================
+Current VRAM Usage: 10.481 GB
+Peak VRAM Usage: 10.745 GB
+Visual Processing Time: 72.068 seconds
+====================================================================================
+
+============================== DEBUG 4: FRAME & GRID ANALYSIS ==============================
+Grid Dimensions -> T (Frames/Time): 43, H (Height Patches): 24, W (Width Patches): 46
+Each frame consists of 1104 raw patches
+After 2x2 spatial pooling, each frame contributes 276 latent tokens
+Total Video Tokens Calculation: (43 frames) * (276 tokens/frame) = 11868
+====================================================================================
+
+============================== DEBUG 5: TOKEN SYNC ==============================
+Actual <|video_pad|> tokens found in text: 11868
+Expected tokens calculated from grid:    11868
+STATUS: SUCCESS - Dimensions are perfectly aligned
+====================================================================================
+--- Starting generation ---
+
+==================================================
+FINAL RESPONSE:
+'The sport being played here is short track speed skating, a competitive winter sport where athletes race on an oval ice rink. The event shown is part of the Canadian Junior Short Track Track Selections #2 held in Calgary, AB, from March 21 to 24, 2018.
+
+In terms of performance, the athlete with the best (fastest) time was **Emilien Blackburn**, who completed the 1000m race in **1:32.60** for the men's category (M R3). This result indicates he was the fastest among the competitors in his heat and likely secured a top position in the standings. Other notable performances include:
+
+- **Charles-Elienne Nadeau** (QC), finishing at 1:32.67.
+- **Emile Bond** (QC), finishing at 1:32.96.
+
+These times are indicative of elite-level junior competition, showcasing high-speed agility and precision required in short track speed skating.
+
+Overall, Emilien Blackburn demonstrated superior speed and technique, earning him the highest ranking in this particular race segment.'
+==================================================
+LOGITS ANALYSIS:
+- Generated tokens: 233
+- Logits shape: torch.Size([233, 1, 151936])
+==================================================
