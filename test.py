@@ -46,27 +46,27 @@ messages = data["messages"]
 for i, entry in enumerate(messages):
     print(f"\n--- Message {i+1} ---")
 
+    # Using a copy to do not modify the original JSON
     current_message = copy.deepcopy(entry)
     video_path = None
 
+    # a. Extract video filename for subtitle matching
     for content_item in entry["content"]:
         if content_item["type"] == "video":
             video_path = content_item["video"]
-            # Estraiamo il nome del file senza estensione (es. '0ag_Qi5OEd0')
             video_filename = Path(video_path).stem
             break
 
+    # b. Clean and insert subtitles if available
     if video_filename:
         srt_path = os.path.join(TEXT_DIR, f"{video_filename}.srt")
         if os.path.exists(srt_path):
             print(f"Found subtitles: {srt_path}")
             cleaned_subtitles = clean_srt(srt_path)
-            
-            # Inseriamo i sottotitoli nel messaggio testuale esistente
+ 
             for content_item in entry["content"]:
                 if content_item["type"] == "text":
                     original_text = content_item["text"]
-                    # Prependiamo i sottotitoli alla domanda
                     content_item["text"] = f"Video Subtitles:\n{cleaned_subtitles}\n\nQuestion: {original_text}"
                     break
         else:
