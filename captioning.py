@@ -25,12 +25,17 @@ os.environ["QWEN_VL_VIDEO_READER_BACKEND"] = "decord"
 def split_video(input_file, chunk_dir, seg_time, overlap):
     print(f"--- Inizio segmentazione video: {input_file} ---")
     # Ottieni la durata totale
-    result = subprocess.run(
-        ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", input_file],
-        stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-    )
-    total_duration = float(result.stdout)
-    
+    cmd = [
+        "ffprobe", "-v", "error", 
+        "-show_entries", "format=duration", 
+        "-of", "default=noprint_wrappers=1:nokey=1", 
+        input_file
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    output = result.stdout.strip().split('\n')[-1]
+    total_duration = float(output)
+    print(f"Durata totale rilevata: {total_duration} secondi")
+
     start = 0
     chunk_idx = 0
     chunk_paths = []
