@@ -9,9 +9,12 @@ import qwen_vl_utils
 # ==========================================
 # 1. CONFIGURAZIONE PERCORSI E PARAMETRI
 # ==========================================
-VIDEO_INPUT = "/work/tesi_lpaladino/documents/Oppenheimer282023%29.mp4"
-CHUNKS_DIR = "/work/tesi_lpaladino/documents/chunks/"
-OUTPUT_CORPUS = "oppenheimer_visual_corpus.txt"
+VIDEO_NAME = os.getenv("VIDEO_NAME", "2001_A_Space_Odyssey")
+BASE_DIR = Path("/work/tesi_lpaladino/data/videos/")
+
+VIDEO_INPUT = BASE_DIR / f"{VIDEO_NAME}/{VIDEO_NAME}.mp4"
+CHUNKS_DIR = BASE_DIR / f"{VIDEO_NAME}/chunks/"
+OUTPUT_CORPUS = BASE_DIR / f"{VIDEO_NAME}/{VIDEO_NAME}_visual_corpus.txt"
 SEGMENT_TIME = 30  # secondi
 OVERLAP_TIME = 2   # secondi di sovrapposizione
 MODEL_PATH = "Qwen/Qwen3-VL-4B-Instruct"
@@ -83,9 +86,9 @@ qwen_vl_utils.vision_process.MODEL_SEQ_LEN = 128000
 # ==========================================
 def run_visual_captioning(chunks):
     prompt_caption = (
-        "Describe the visual content of this video sequence in detail. "
-        "Focus on characters, facial expressions, setting, and key actions. "
-        "Be objective and precise."
+        "Provide a highly concise, precise, and detailed description of the scene. "
+        "Do not include any artistic interpretations, subjective commentary, or mention the camera, model, or the video itself. "
+        "Focus strictly and directly on describing the physical actions, the setting, the characters, and the objects present."
     )
     
     with open(OUTPUT_CORPUS, "w", encoding="utf-8") as f:

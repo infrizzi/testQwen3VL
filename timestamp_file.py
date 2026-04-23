@@ -1,5 +1,6 @@
 import re
 
+# --- USED FOR CONVERTING THE TIMESTAMPS IN THE OPPENHEIMER VISUAL CORPUS ---
 def convert_timestamps(input_file, output_file):
     # Regex per trovare la riga dell'intestazione e catturare l'indice del segmento
     pattern = re.compile(r"^--- SEGMENT (\d+) \(.*\) ---")

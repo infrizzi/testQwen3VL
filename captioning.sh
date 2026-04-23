@@ -18,6 +18,7 @@ module load ffmpeg/7.1-gcc-11.4.0
 
 # Attivazione environment
 source activate flash_test
+export VIDEO_NAME=${VIDEO_NAME:-"2001_A_Space_Odyssey"}
 
 # Cartelle di lavoro
 cd /homes/lpaladino/testQwen3VL
@@ -28,7 +29,7 @@ export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 export QWEN_VL_VIDEO_READER_BACKEND=decord
 
 # Creazione cartella logs se non presente
-mkdir -p logs
+mkdir -p logs/"${VIDEO_NAME}"/captioning
 
 # ------------------------------
 # Esecuzione Inferenza
