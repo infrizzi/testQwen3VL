@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=captioning
-#SBATCH --output=logs/2001_A_Space_Odyssey/infer_%j.out
-#SBATCH --error=logs/2001_A_Space_Odyssey/infer_%j.err
+#SBATCH --output=logs/28_Days_Later/infer_%j.out
+#SBATCH --error=logs/28_Days_Later/infer_%j.err
 #SBATCH --account=tesi_lpaladino
 #SBATCH --partition=all_usr_prod
 #SBATCH --gres=gpu:1
@@ -18,7 +18,7 @@ module load ffmpeg/7.1-gcc-11.4.0
 
 # Attivazione environment
 source activate flash_test
-export VIDEO_NAME=${VIDEO_NAME:-"2001_A_Space_Odyssey"}
+export VIDEO_NAME=${VIDEO_NAME:-"28_Days_Later"}
 
 # Cartelle di lavoro
 cd /homes/lpaladino/testQwen3VL
