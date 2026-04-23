@@ -137,7 +137,12 @@ def run_visual_captioning(chunks):
                 )[0]
 
             # Scrittura su file (formato compatibile con self-study)
-            f.write(f"--- SEGMENT {i} ({chunk_path}) ---\n")
+            start_sec = i * (SEGMENT_TIME - OVERLAP_TIME)
+            end_sec = start_sec + SEGMENT_TIME
+            start_str = time.strftime('%H:%M:%S', time.gmtime(start_sec))
+            end_str = time.strftime('%H:%M:%S', time.gmtime(end_sec))
+
+            f.write(f"SEGMENT {i} [{start_str} - {end_str}]\n")
             f.write(caption.strip() + "\n\n")
             f.flush() # Salva costantemente
             

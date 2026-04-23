@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=captioning
-#SBATCH --output=logs/capt/infer_%j.out
-#SBATCH --error=logs/capt/infer_%j.err
+#SBATCH --output=logs/${VIDEO_NAME}/infer_%j.out
+#SBATCH --error=logs/${VIDEO_NAME}/infer_%j.err
 #SBATCH --account=tesi_lpaladino
 #SBATCH --partition=all_usr_prod
 #SBATCH --gres=gpu:1
@@ -29,7 +29,7 @@ export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 export QWEN_VL_VIDEO_READER_BACKEND=decord
 
 # Creazione cartella logs se non presente
-mkdir -p logs/"${VIDEO_NAME}"/captioning
+mkdir -p logs/"${VIDEO_NAME}"
 
 # ------------------------------
 # Esecuzione Inferenza
