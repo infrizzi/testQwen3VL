@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=captioning
-#SBATCH --output=logs/Oppenheimer/infer_%j.out
-#SBATCH --error=logs/Oppenheimer/infer_%j.err
+#SBATCH --output=logs/Scary_Movie_2/infer_%j.out
+#SBATCH --error=logs/Scary_Movie_2/infer_%j.err
 #SBATCH --account=tesi_lpaladino
 #SBATCH --partition=all_usr_prod
 #SBATCH --gres=gpu:1
@@ -18,7 +18,7 @@ module load ffmpeg/7.1-gcc-11.4.0
 
 # Attivazione environment
 source activate flash_test
-export VIDEO_NAME=${VIDEO_NAME:-"Oppenheimer"}
+export VIDEO_NAME=${VIDEO_NAME:-"Scary_Movie_2"}
 
 # Cartelle di lavoro
 cd /homes/lpaladino/testQwen3VL
