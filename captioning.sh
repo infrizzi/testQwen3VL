@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=captioning
-#SBATCH --output=logs/tv/capt_%j.out
-#SBATCH --error=logs/tv/capt_%j.err
+#SBATCH --output=logs/tech/capt_%j.out
+#SBATCH --error=logs/tech/capt_%j.err
 #SBATCH --account=tesi_lpaladino
 #SBATCH --partition=all_usr_prod
 #SBATCH --gres=gpu:1
@@ -18,8 +18,8 @@ module load ffmpeg/7.1-gcc-11.4.0
 
 # Attivazione environment
 source activate flash_test
-export VIDEO_NAME=${VIDEO_NAME:-"0IdYJGBmguM"}
-export VIDEO_SUBTYPE=${VIDEO_SUBTYPE:-"Video_tv"}
+export VIDEO_NAME=${VIDEO_NAME:-"0rCbfsuKdYw"}
+export VIDEO_SUBTYPE=${VIDEO_SUBTYPE:-"Video_tech"}
 
 # Cartelle di lavoro
 cd /homes/lpaladino/testQwen3VL
