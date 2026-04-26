@@ -9,12 +9,13 @@ import qwen_vl_utils
 # ==========================================
 # 1. CONFIGURAZIONE PERCORSI E PARAMETRI
 # ==========================================
-VIDEO_NAME = os.getenv("VIDEO_NAME", "2001_A_Space_Odyssey")
-BASE_DIR = Path("/work/tesi_lpaladino/data/videos/")
+VIDEO_NAME = os.getenv("VIDEO_NAME", "1NcGHbFWBFA")
+VIDEO_SUBTYPE = os.getenv("VIDEO_SUBTYPE", "Video_animal")
+BASE_DIR = Path(f"/work/tesi_lpaladino/data_mme/videos/{VIDEO_SUBTYPE}")
 
-VIDEO_INPUT = BASE_DIR / f"{VIDEO_NAME}/{VIDEO_NAME}.mp4"
-CHUNKS_DIR = BASE_DIR / f"{VIDEO_NAME}/chunks/"
-OUTPUT_CORPUS = BASE_DIR / f"{VIDEO_NAME}/{VIDEO_NAME}_visual_corpus.txt"
+VIDEO_INPUT = BASE_DIR / f"{VIDEO_NAME}.mp4"
+CHUNKS_DIR = BASE_DIR / "chunks/"
+OUTPUT_CORPUS = BASE_DIR / f"{VIDEO_NAME}_visual_corpus.txt"
 SEGMENT_TIME = 30  # secondi
 OVERLAP_TIME = 2   # secondi di sovrapposizione
 MODEL_PATH = "Qwen/Qwen3-VL-4B-Instruct"
