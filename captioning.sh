@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=captioning
-#SBATCH --output=logs/animal/capt_%j.out
-#SBATCH --error=logs/animal/capt_%j.err
+#SBATCH --output=logs/life/capt_%j.out
+#SBATCH --error=logs/life/capt_%j.err
 #SBATCH --account=tesi_lpaladino
 #SBATCH --partition=all_usr_prod
 #SBATCH --gres=gpu:1
@@ -18,8 +18,8 @@ module load ffmpeg/7.1-gcc-11.4.0
 
 # Attivazione environment
 source activate flash_test
-export VIDEO_NAME=${VIDEO_NAME:-"1NcGHbFWBFA"}
-export VIDEO_SUBTYPE=${VIDEO_SUBTYPE:-"Video_animal"}
+export VIDEO_NAME=${VIDEO_NAME:-"0Jbc3Ah4EIc"}
+export VIDEO_SUBTYPE=${VIDEO_SUBTYPE:-"Video_life"}
 
 # Cartelle di lavoro
 cd /homes/lpaladino/testQwen3VL
@@ -30,7 +30,7 @@ export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 export QWEN_VL_VIDEO_READER_BACKEND=decord
 
 # Creazione cartella logs se non presente
-mkdir -p logs/"$VIDEO_NAME"
+mkdir -p logs
 
 # ------------------------------
 # Esecuzione Inferenza
