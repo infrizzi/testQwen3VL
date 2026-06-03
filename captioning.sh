@@ -19,7 +19,7 @@ module load ffmpeg/7.1-gcc-11.4.0
 source /work/tesi_lpaladino/Qwen3VL_env/bin/activate
 
 export VIDEO_NAME=${VIDEO_NAME:-"2001_A_Space_Odyssey"} # default video names
-export SEGMENT_TIME=${SEGMENT_TIME:-30} # default segment time in seconds
+export SEGMENT_TIME=${SEGMENT_TIME:-10} # default segment time in seconds
 export OVERLAP_TIME=${OVERLAP_TIME:-2} # default overlap time in seconds
 
 # Cartelle di lavoro

@@ -12,8 +12,8 @@ import qwen_vl_utils
 VIDEO_NAME = os.getenv("VIDEO_NAME", "2001_A_Space_Odyssey") 
 BASE_DIR = Path(f"/work/tesi_lpaladino/data/videos/{VIDEO_NAME}")
 
-SEGMENT_TIME = os.getenv("SEGMENT_TIME", 10) # durata di ogni segmento in secondi
-OVERLAP_TIME = os.getenv("OVERLAP_TIME", 2)  # secondi di sovrapposizione
+SEGMENT_TIME = int(os.getenv("SEGMENT_TIME", 10)) # durata di ogni segmento in secondi
+OVERLAP_TIME = int(os.getenv("OVERLAP_TIME", 2))  # secondi di sovrapposizione
 
 VIDEO_INPUT = BASE_DIR / f"{VIDEO_NAME}.mp4"
 CHUNKS_DIR = BASE_DIR / f"chunks_{SEGMENT_TIME}/"
