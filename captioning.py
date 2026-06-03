@@ -68,19 +68,12 @@ def split_video(input_file, chunk_dir, seg_time, overlap):
 # ==========================================
 print(f"--- Caricamento modello: {MODEL_PATH} ---")
 processor = AutoProcessor.from_pretrained(MODEL_PATH)
-processor.video_processor.max_frames = 1024
-processor.video_processor.min_frames = 16
 
 model = Qwen3VLForConditionalGeneration.from_pretrained(
     MODEL_PATH,
     torch_dtype=torch.bfloat16,
     device_map="auto"
 )
-
-# Ottimizzazioni per video lunghi/dettagliati
-qwen_vl_utils.vision_process.VIDEO_MAX_TOKEN_NUM = 2048
-qwen_vl_utils.vision_process.FPS_MAX_FRAMES = 1024
-qwen_vl_utils.vision_process.MODEL_SEQ_LEN = 128000 
 
 # ==========================================
 # 4. LOOP DI INFERENZA E SCRITTURA CORPUS
