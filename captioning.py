@@ -9,15 +9,15 @@ import qwen_vl_utils
 # ==========================================
 # 1. CONFIGURAZIONE PERCORSI E PARAMETRI
 # ==========================================
-VIDEO_NAME = os.getenv("VIDEO_NAME", "1NcGHbFWBFA")
-VIDEO_SUBTYPE = os.getenv("VIDEO_SUBTYPE", "Video_animal")
-BASE_DIR = Path(f"/work/tesi_lpaladino/data_mme/videos/{VIDEO_SUBTYPE}")
+VIDEO_NAME = os.getenv("VIDEO_NAME", "2001_A_Space_Odyssey") 
+BASE_DIR = Path(f"/work/tesi_lpaladino/data/videos/{VIDEO_NAME}")
+
+SEGMENT_TIME = os.getenv("SEGMENT_TIME", 10) # durata di ogni segmento in secondi
+OVERLAP_TIME = os.getenv("OVERLAP_TIME", 2)  # secondi di sovrapposizione
 
 VIDEO_INPUT = BASE_DIR / f"{VIDEO_NAME}.mp4"
-CHUNKS_DIR = BASE_DIR / "chunks/"
-OUTPUT_CORPUS = BASE_DIR / f"{VIDEO_NAME}_visual_corpus.txt"
-SEGMENT_TIME = 30  # secondi
-OVERLAP_TIME = 2   # secondi di sovrapposizione
+CHUNKS_DIR = BASE_DIR / f"chunks_{SEGMENT_TIME}/"
+OUTPUT_CORPUS = BASE_DIR / f"{VIDEO_NAME}_visual_corpus_{SEGMENT_TIME}.txt"
 MODEL_PATH = "Qwen/Qwen3-VL-4B-Instruct"
 
 os.makedirs(CHUNKS_DIR, exist_ok=True)
@@ -28,6 +28,7 @@ os.environ["QWEN_VL_VIDEO_READER_BACKEND"] = "decord"
 # ==========================================
 def split_video(input_file, chunk_dir, seg_time, overlap):
     print(f"--- Inizio segmentazione video: {input_file} ---")
+    print(f"Segmento: {seg_time} secondi, Sovrapposizione: {overlap} secondi")
     # Ottieni la durata totale
     cmd = [
         "ffprobe", "-v", "error", 
