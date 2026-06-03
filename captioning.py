@@ -74,7 +74,6 @@ processor.video_processor.min_frames = 16
 model = Qwen3VLForConditionalGeneration.from_pretrained(
     MODEL_PATH,
     torch_dtype=torch.bfloat16,
-    attn_implementation="flash_attention_2",
     device_map="auto"
 )
 
