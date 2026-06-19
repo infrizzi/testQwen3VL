@@ -14,9 +14,10 @@
 module unload python/3.11.11-gcc-11.4.0
 module load cuda/12.6.3-none-none
 module load ffmpeg/7.1-gcc-11.4.0
+module load anaconda3/2023.09-0-none-none
 
-# Attivazione environment
-source /work/tesi_lpaladino/Qwen3VL_env/bin/activate
+# Loading environment
+source activate flash_test
 
 export VIDEO_NAME=${VIDEO_NAME:-"2001_A_Space_Odyssey"} # default video names
 export SEGMENT_TIME=${SEGMENT_TIME:-10} # default segment time in seconds
