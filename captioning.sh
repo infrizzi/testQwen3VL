@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=captioning
-#SBATCH --output=logs/2001_A_Space_Odyssey/capt_%j.out
-#SBATCH --error=logs/2001_A_Space_Odyssey/capt_%j.err
+#SBATCH --output=logs/capt_%j.out
+#SBATCH --error=logs/capt_%j.err
 #SBATCH --account=tesi_lpaladino
 #SBATCH --partition=all_usr_prod
 #SBATCH --gres=gpu:1
