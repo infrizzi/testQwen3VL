@@ -20,8 +20,8 @@ module load anaconda3/2023.09-0-none-none
 source activate flash_test
 
 export VIDEO_NAME=${VIDEO_NAME:-"2001_A_Space_Odyssey"} # default video names
-export SEGMENT_TIME=${SEGMENT_TIME:-10} # default segment time in seconds
-export OVERLAP_TIME=${OVERLAP_TIME:-2} # default overlap time in seconds
+export SEGMENT_TIME=${SEGMENT_TIME:-30} # default segment time in seconds
+export OVERLAP_TIME=${OVERLAP_TIME:-0} # default overlap time in seconds
 
 # Cartelle di lavoro
 cd /homes/lpaladino/testQwen3VL
