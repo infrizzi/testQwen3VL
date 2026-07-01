@@ -10,7 +10,7 @@ import qwen_vl_utils
 # 1. CONFIGURAZIONE PERCORSI E PARAMETRI
 # ==========================================
 VIDEO_NAME = os.getenv("VIDEO_NAME", "2001_A_Space_Odyssey") 
-BASE_DIR = Path(f"/work/tesi_lpaladino/data/videos/{VIDEO_NAME}")
+BASE_DIR = Path(f"/work/tesi_lpaladino/allvb/videos/{VIDEO_NAME}")
 
 SEGMENT_TIME = int(os.getenv("SEGMENT_TIME", 30)) # durata di ogni segmento in secondi
 OVERLAP_TIME = int(os.getenv("OVERLAP_TIME", 0))  # secondi di sovrapposizione
