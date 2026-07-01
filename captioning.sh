@@ -11,7 +11,6 @@
 #SBATCH --constraint=gpu_A40_45G|gpu_L40S_45G|gpu_RTX_A5000_24G|gpu_RTX6000_24G
 
 # Caricamento moduli
-module load cuda/12.6.3
 module load ffmpeg/8.1
 module load anaconda3/2023.09-0
 

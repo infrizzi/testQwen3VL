@@ -27,6 +27,18 @@ os.environ["QWEN_VL_VIDEO_READER_BACKEND"] = "decord"
 # 2. FUNZIONE DI SEGMENTAZIONE (FFMPEG)
 # ==========================================
 def split_video(input_file, chunk_dir, seg_time, overlap):
+    """
+    Splits a video into smaller chunks using FFmpeg.
+    
+    Inputs:
+    - input_file (Path/str): The path to the input video file.
+    - chunk_dir (Path/str): The directory where the video chunks will be saved.
+    - seg_time (int): The duration of each video chunk in seconds.
+    - overlap (int): The overlap duration between consecutive chunks in seconds.
+    
+    Outputs:
+    - chunk_paths (list): A list of strings representing the file paths of the created video chunks.
+    """
     print(f"--- Inizio segmentazione video: {input_file} ---")
     print(f"Segmento: {seg_time} secondi, Sovrapposizione: {overlap} secondi")
     # Ottieni la durata totale
@@ -53,9 +65,11 @@ def split_video(input_file, chunk_dir, seg_time, overlap):
             "-i", input_file, "-c:v", "libx264", "-crf", "23", "-preset", "veryfast",
             "-c:a", "aac", "-b:a", "128k", output_path
         ]
-        subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            print(f"FFmpeg failed for {output_path} with error:\n{result.stderr}")
+            raise RuntimeError("FFmpeg error during video splitting.")
         chunk_paths.append(output_path)
-        
         start += (seg_time - overlap)
         chunk_idx += 1
         if chunk_idx % 10 == 0:
@@ -79,6 +93,15 @@ model = Qwen3VLForConditionalGeneration.from_pretrained(
 # 4. LOOP DI INFERENZA E SCRITTURA CORPUS
 # ==========================================
 def run_visual_captioning(chunks):
+    """
+    Runs visual captioning on a list of video chunks using the Qwen3-VL model.
+    
+    Inputs:
+    - chunks (list): A list of strings representing the paths to the video chunks.
+    
+    Outputs:
+    - None. The captions are written directly to the OUTPUT_CORPUS text file.
+    """
     prompt_caption = (
         "Provide a highly concise, precise, and detailed description of the scene. "
         "Do not include any artistic interpretations, subjective commentary, or mention the camera, model, or the video itself. "
