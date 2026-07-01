@@ -62,8 +62,7 @@ def split_video(input_file, chunk_dir, seg_time, overlap):
         # Comando ffmpeg per estrarre il segmento senza ricodifica pesante
         cmd = [
             "ffmpeg", "-y", "-ss", str(start), "-t", str(seg_time),
-            "-i", input_file, "-c:v", "libx264", "-crf", "23", "-preset", "veryfast",
-            "-c:a", "aac", "-b:a", "128k", output_path
+            "-i", input_file, "-c", "copy", output_path
         ]
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode != 0:
