@@ -35,4 +35,4 @@ mkdir -p logs
 # ------------------------------
 # Esecuzione Inferenza
 # ------------------------------
-python captioning.py
+python -u captioning.py
